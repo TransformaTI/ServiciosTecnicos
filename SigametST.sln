@@ -1,5 +1,7 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2011
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SigametST", "SigametST.vbproj", "{4B91A225-F57F-4DC9-B5E5-5E942C868BBA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E8116691-62D9-4DA6-A12B-6D526C96C3F3} = {E8116691-62D9-4DA6-A12B-6D526C96C3F3}
@@ -9,8 +11,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SigametST", "SigametST.vbpr
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneraCiclosAutomaticos", "..\GeneraCiclosAutomaticos VS2010\GeneraCiclosAutomaticos.csproj", "{E32906E5-5767-42B5-8FE7-87537CCBCDBA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiquidacionSTN", "..\LiquidacionSTN VS2010\LiquidacionSTN.csproj", "{000FF76B-D44C-4455-ADEA-C771FF53593D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PantallaFranquicia", "..\PantallaFranquicia VS2010\PantallaFranquicia.csproj", "{D04109B2-7F53-4953-86CC-518228A62325}"
 EndProject
@@ -26,42 +26,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresupuestoST", "..\Presupu
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "STClienteEquipo", "..\STClienteEquipo\STClienteEquipo.vbproj", "{CC99701F-0F92-46AE-B685-5A68A716A7A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiquidacionSTN", "..\SigametLibrerias\LiquidacionSTN VS2010\LiquidacionSTN.csproj", "{000FF76B-D44C-4455-ADEA-C771FF53593D}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://192.168.1.30:8080/tfs/proyectosgm
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ..\\GeneraCiclosAutomaticos\u0020VS2010\\GeneraCiclosAutomaticos.csproj
-		SccProjectName1 = ../GeneraCiclosAutomaticos\u0020VS2010
-		SccLocalPath1 = ..\\GeneraCiclosAutomaticos\u0020VS2010
-		SccProjectUniqueName2 = ..\\LiquidacionSTN\u0020VS2010\\LiquidacionSTN.csproj
-		SccProjectName2 = ../LiquidacionSTN\u0020VS2010
-		SccLocalPath2 = ..\\LiquidacionSTN\u0020VS2010
-		SccProjectUniqueName3 = ..\\PantallaFranquicia\u0020VS2010\\PantallaFranquicia.csproj
-		SccProjectName3 = ../PantallaFranquicia\u0020VS2010
-		SccLocalPath3 = ..\\PantallaFranquicia\u0020VS2010
-		SccProjectUniqueName4 = ..\\PresupuestoST\u0020VS2010\\PresupuestoST.csproj
-		SccProjectName4 = ../PresupuestoST\u0020VS2010
-		SccLocalPath4 = ..\\PresupuestoST\u0020VS2010
-		SccProjectUniqueName5 = ..\\ProgramacionesST\u0020VS2010\\ProgramacionesST.vbproj
-		SccProjectName5 = ../ProgramacionesST\u0020VS2010
-		SccLocalPath5 = ..\\ProgramacionesST\u0020VS2010
-		SccProjectUniqueName6 = ..\\Prueba\u0020VS2010\\Prueba.csproj
-		SccProjectName6 = ../Prueba\u0020VS2010
-		SccLocalPath6 = ..\\Prueba\u0020VS2010
-		SccProjectUniqueName7 = ..\\PruebaFranquicia\u0020VS2010\\PruebaFranquicia.csproj
-		SccProjectName7 = ../PruebaFranquicia\u0020VS2010
-		SccLocalPath7 = ..\\PruebaFranquicia\u0020VS2010
-		SccProjectUniqueName8 = ..\\PruebaST\u0020VS2010\\PruebaST.vbproj
-		SccProjectName8 = ../PruebaST\u0020VS2010
-		SccLocalPath8 = ..\\PruebaST\u0020VS2010
-		SccProjectUniqueName9 = SigametST.vbproj
-		SccLocalPath9 = .
-		SccProjectUniqueName10 = ..\\STClienteEquipo\\STClienteEquipo.vbproj
-		SccProjectName10 = ../STClienteEquipo
-		SccLocalPath10 = ..\\STClienteEquipo
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -91,16 +58,6 @@ Global
 		{E32906E5-5767-42B5-8FE7-87537CCBCDBA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E32906E5-5767-42B5-8FE7-87537CCBCDBA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E32906E5-5767-42B5-8FE7-87537CCBCDBA}.Release|x86.ActiveCfg = Release|Any CPU
-		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Release|x86.ActiveCfg = Release|Any CPU
 		{D04109B2-7F53-4953-86CC-518228A62325}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D04109B2-7F53-4953-86CC-518228A62325}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D04109B2-7F53-4953-86CC-518228A62325}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -171,8 +128,23 @@ Global
 		{CC99701F-0F92-46AE-B685-5A68A716A7A1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{CC99701F-0F92-46AE-B685-5A68A716A7A1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CC99701F-0F92-46AE-B685-5A68A716A7A1}.Release|x86.ActiveCfg = Release|Any CPU
+		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Debug|x86.Build.0 = Debug|Any CPU
+		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Release|x86.ActiveCfg = Release|Any CPU
+		{000FF76B-D44C-4455-ADEA-C771FF53593D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D645CE03-8E16-433C-9B2B-1FC71055EE2C}
 	EndGlobalSection
 EndGlobal

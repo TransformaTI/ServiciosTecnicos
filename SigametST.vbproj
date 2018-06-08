@@ -116,6 +116,9 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>bin\Interop.VBIDE.dll</HintPath>
     </Reference>
+    <Reference Include="LiquidacionSTN">
+      <HintPath>..\SigametLibrerias\LiquidacionSTN VS2010\bin\Debug\LiquidacionSTN.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic">
       <Name>Microsoft.VisualBasic</Name>
     </Reference>
@@ -127,6 +130,10 @@
     <Reference Include="PantallaFranquicia, Version=1.0.5730.16969, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\PantallaFranquicia.dll</HintPath>
+    </Reference>
+    <Reference Include="RTGMGateway, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RTGMGateway\RTGMGateway\bin\Debug\RTGMGateway.dll</HintPath>
     </Reference>
     <Reference Include="SigaMetClasses, Version=2.0.0.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -410,7 +417,9 @@
       <DependentUpon>NuevaLiquidacion.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
@@ -427,12 +436,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LiquidacionSTN VS2010\LiquidacionSTN.csproj">
-      <Project>{000FF76B-D44C-4455-ADEA-C771FF53593D}</Project>
-      <Name>LiquidacionSTN</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>

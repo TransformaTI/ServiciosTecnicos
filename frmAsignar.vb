@@ -1,3 +1,4 @@
+Imports System.Collections.Generic
 Imports System.Data.SqlClient
 Public Class frmAsignar
     Inherits System.Windows.Forms.Form
@@ -277,6 +278,7 @@ Public Class frmAsignar
                     Else
                         Guarda = 1
                         Dim ConexionTransaccion As SqlConnection = SigaMetClasses.DataLayer.Conexion
+                        Dim unidad As Integer
                         ConexionTransaccion.Open()
                         'instancia del comando
                         Dim sqlcommandtransac As New SqlCommand()
@@ -292,8 +294,10 @@ Public Class frmAsignar
                         sqlcommandtransac.Parameters.Add("@Celula", SqlDbType.Int).Value = _Celula
                         If cboUnidad.SelectedValue Is Nothing Then
                             sqlcommandtransac.Parameters.Add("@Unidad", SqlDbType.Int).Value = 0
+                            unidad = 0
                         Else
                             sqlcommandtransac.Parameters.Add("@Unidad", SqlDbType.Int).Value = cboUnidad.SelectedValue
+                            unidad = CInt(cboUnidad.SelectedValue)
                         End If
                         If _Folio = 0 Then
                             sqlcommandtransac.Parameters.Add("@Folio", SqlDbType.Int).Value = 0
@@ -330,6 +334,42 @@ Public Class frmAsignar
                             'Fin de la transaccion
                             ConexionTransaccion.Close()
                             'ConexionTransaccion.Dispose()
+
+                        End Try
+
+                        Try
+                            'rtgmgateway                            
+                            Dim objGateway As New RTGMGateway.RTGMActualizarPedido()
+                            objGateway.URLServicio = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc"
+
+                            Dim lstPedido As New List(Of RTGMCore.Pedido)
+
+                            Dim pedidoDatos As New RTGMCore.PedidoCRMDatos()
+                            'pedidoDatos.IDPedido = 0
+                            pedidoDatos.AnioAtt = _AñoAtt
+                            pedidoDatos.IDAutotanque = unidad
+                            pedidoDatos.IDFolioAtt = _Folio
+                            'Dim rutaS As New RTGMCore.RutaCRMDatos()
+                            'rutaS.IDRuta = 0
+                            'pedidoDatos.RutaSuministro = rutaS
+                            'pedidoDatos.SerieRemision = ""
+
+                            lstPedido.Add(pedidoDatos)
+
+                            Dim solicitud As New RTGMGateway.SolicitudActualizarPedido()
+                            solicitud.Fuente = RTGMCore.Fuente.CRM
+                            solicitud.IDEmpresa = GLOBAL_Corporativo
+                            solicitud.Pedidos = lstPedido
+                            solicitud.Portatil = False
+                            solicitud.TipoActualizacion = RTGMCore.TipoActualizacion.AsignacionServicioTecnico
+                            solicitud.Usuario = GLOBAL_Usuario
+
+                            Dim listaRespuesta As New List(Of RTGMCore.Pedido)
+                            listaRespuesta = objGateway.ActualizarPedido(solicitud)
+                            'rtgmgateway
+                        Catch ex As Exception
+                            MsgBox(ex.Message)
+                        Finally
                             Me.Close()
                         End Try
                     End If
