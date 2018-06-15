@@ -1,6 +1,7 @@
 
 Option Strict On
 
+Imports System.Collections.Generic
 Imports System.Data
 Imports System.Data.SqlClient
 
@@ -57,7 +58,7 @@ Public Class FrmCancelarLiquidacion
     Friend WithEvents DGTBCAñoAtt As System.Windows.Forms.DataGridTextBoxColumn
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.Resources.ResourceManager = New System.Resources.ResourceManager(GetType(FrmCancelarLiquidacion))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmCancelarLiquidacion))
         Me.ToolBar1 = New System.Windows.Forms.ToolBar()
         Me.btnCancelar = New System.Windows.Forms.ToolBarButton()
         Me.btnCerrar = New System.Windows.Forms.ToolBarButton()
@@ -82,34 +83,37 @@ Public Class FrmCancelarLiquidacion
         Me.ToolBar1.Buttons.AddRange(New System.Windows.Forms.ToolBarButton() {Me.btnCancelar, Me.btnCerrar})
         Me.ToolBar1.DropDownArrows = True
         Me.ToolBar1.ImageList = Me.ImageList1
+        Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
         Me.ToolBar1.Name = "ToolBar1"
         Me.ToolBar1.ShowToolTips = True
-        Me.ToolBar1.Size = New System.Drawing.Size(568, 39)
+        Me.ToolBar1.Size = New System.Drawing.Size(568, 42)
         Me.ToolBar1.TabIndex = 0
         '
         'btnCancelar
         '
         Me.btnCancelar.ImageIndex = 0
+        Me.btnCancelar.Name = "btnCancelar"
         Me.btnCancelar.Text = "Cancelar"
         '
         'btnCerrar
         '
         Me.btnCerrar.ImageIndex = 1
+        Me.btnCerrar.Name = "btnCerrar"
         Me.btnCerrar.Text = "Cerrar"
         '
         'ImageList1
         '
-        Me.ImageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
-        Me.ImageList1.ImageSize = New System.Drawing.Size(16, 16)
         Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
         Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
+        Me.ImageList1.Images.SetKeyName(0, "")
+        Me.ImageList1.Images.SetKeyName(1, "")
         '
         'grdCancelaLiquidacion
         '
         Me.grdCancelaLiquidacion.BackgroundColor = System.Drawing.SystemColors.ControlLightLight
         Me.grdCancelaLiquidacion.DataMember = ""
         Me.grdCancelaLiquidacion.HeaderForeColor = System.Drawing.SystemColors.ControlText
-        Me.grdCancelaLiquidacion.Location = New System.Drawing.Point(0, 40)
+        Me.grdCancelaLiquidacion.Location = New System.Drawing.Point(0, 34)
         Me.grdCancelaLiquidacion.Name = "grdCancelaLiquidacion"
         Me.grdCancelaLiquidacion.ReadOnly = True
         Me.grdCancelaLiquidacion.Size = New System.Drawing.Size(576, 160)
@@ -189,7 +193,7 @@ Public Class FrmCancelarLiquidacion
         '
         'dtpFAsignacion
         '
-        Me.dtpFAsignacion.Format = System.Windows.Forms.DateTimePickerFormat.Short
+        Me.dtpFAsignacion.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
         Me.dtpFAsignacion.Location = New System.Drawing.Point(408, 8)
         Me.dtpFAsignacion.Name = "dtpFAsignacion"
         Me.dtpFAsignacion.Size = New System.Drawing.Size(112, 20)
@@ -209,13 +213,17 @@ Public Class FrmCancelarLiquidacion
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
         Me.ClientSize = New System.Drawing.Size(568, 198)
-        Me.Controls.AddRange(New System.Windows.Forms.Control() {Me.Label1, Me.dtpFAsignacion, Me.grdCancelaLiquidacion, Me.ToolBar1})
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.dtpFAsignacion)
+        Me.Controls.Add(Me.grdCancelaLiquidacion)
+        Me.Controls.Add(Me.ToolBar1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Name = "FrmCancelarLiquidacion"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Cancelar Liquidacion"
         CType(Me.grdCancelaLiquidacion, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
@@ -274,6 +282,56 @@ Public Class FrmCancelarLiquidacion
                     Finally
                         ConexionTransaction.Close()
                         'ConexionTransaction.Dispose()
+                        Me.Close()
+                    End Try
+
+                    Try
+                        'rtgmgateway cancela liquidacion  
+                        'buscar en la tabla pedido con el Folio (que está arriba asignado), traer lo necesario.
+                        'siempre y cuando IDCRM no sea NULL
+                        Dim spSTObtenerPedido As New SqlCommand()
+
+                        spSTObtenerPedido.Parameters.Add("@Pedido", SqlDbType.Int).Value = 210325
+                        spSTObtenerPedido.Parameters.Add("@Celula", SqlDbType.Int).Value = 2
+                        spSTObtenerPedido.Parameters.Add("@AnioPed", SqlDbType.Int).Value = 2019
+
+                        spSTObtenerPedido.Connection = ConexionTransaction
+                        spSTObtenerPedido.CommandType = CommandType.StoredProcedure
+                        spSTObtenerPedido.CommandText = "spSTObtenerPedido"
+                        spSTObtenerPedido.CommandTimeout = 300
+
+                        Dim drSP As SqlDataReader = spSTObtenerPedido.ExecuteReader(CommandBehavior.CloseConnection)
+                        MessageBox.Show(CType(drSP.FieldCount, String))
+
+                        Dim objGateway As New RTGMGateway.RTGMActualizarPedido()
+                        objGateway.URLServicio = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc"
+
+                        Dim lstPedido As New List(Of RTGMCore.Pedido)
+
+                        Dim pedidoDatos As New RTGMCore.PedidoCRMDatos()
+                        'pedidoDatos.IDPedido = Pedido.IDCRM
+                        'pedidoDatos.AnioAtt = _AñoAtt
+                        'pedidoDatos.IDAutotanque = unidad
+                        'pedidoDatos.IDFolioAtt = _Folio
+                        'pedidoDatos.FolioRemision = folioremision
+                        'pedidoDatos.SerieRemision = serieremision
+                        'Dim rutaS As New RTGMCore.RutaCRMDatos()
+                        'rutaS.IDRuta = 0
+                        'pedidoDatos.RutaSuministro = rutaS
+
+                        lstPedido.Add(pedidoDatos)
+
+                        Dim solicitud As New RTGMGateway.SolicitudActualizarPedido()
+                        solicitud.Fuente = RTGMCore.Fuente.CRM
+                        solicitud.IDEmpresa = GLOBAL_Corporativo
+                        solicitud.Pedidos = lstPedido
+                        solicitud.Portatil = False
+                        solicitud.TipoActualizacion = RTGMCore.TipoActualizacion.Cancelacion
+                        solicitud.Usuario = GLOBAL_Usuario
+
+                    Catch ex As Exception
+                        MsgBox(ex.Message)
+                    Finally
                         Me.Close()
                     End Try
 

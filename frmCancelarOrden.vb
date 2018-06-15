@@ -1,3 +1,4 @@
+Imports System.Collections.Generic
 Imports System.Data.SqlClient
 Public Class frmCancelarOrden
     Inherits System.Windows.Forms.Form
@@ -424,8 +425,81 @@ Public Class frmCancelarOrden
                         Transaccion.Rollback()
                         MessageBox.Show(ex.Message)
                     Finally
-                        Conexion.Close()
                         'Conexion.Dispose()
+                        Me.Close()
+                    End Try
+
+                    Try
+                        'rtgmgateway cancela orden  
+                        'buscar en la tabla pedido con el _Pedido (que está arriba asignado), traer lo necesario.
+                        'siempre y cuando IDCRM no sea NULL
+                        Dim spSTObtenerPedido As New SqlCommand()
+
+                        spSTObtenerPedido.Parameters.Add("@Pedido", SqlDbType.Int).Value = _Pedido
+                        spSTObtenerPedido.Parameters.Add("@Celula", SqlDbType.Int).Value = _Celula
+                        spSTObtenerPedido.Parameters.Add("@AnioPed", SqlDbType.Int).Value = _AñoPed
+
+                        Transaccion = Conexion.BeginTransaction
+                        spSTObtenerPedido.Connection = Conexion
+                        spSTObtenerPedido.Transaction = Transaccion
+
+                        spSTObtenerPedido.CommandType = CommandType.StoredProcedure
+                        spSTObtenerPedido.CommandText = "spSTObtenerDatosPedido"
+                        spSTObtenerPedido.CommandTimeout = 300
+
+                        Dim drSP As SqlDataReader = spSTObtenerPedido.ExecuteReader(CommandBehavior.CloseConnection)
+
+                        If drSP.HasRows Then
+                            MessageBox.Show("HASROWS = TRUE")
+                            Dim objGateway As New RTGMGateway.RTGMActualizarPedido()
+                            objGateway.URLServicio = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc"
+
+                            Dim lstPedido As New List(Of RTGMCore.Pedido)
+
+                            Do While drSP.Read()
+                                MessageBox.Show(CType(drSP(0), String))
+                                Dim objWS As New RTGMGateway.RTGMGateway()
+                                objWS.URLServicio = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc"
+
+                                Dim objSolicitud As New RTGMGateway.SolicitudGateway()
+                                objSolicitud.IDCliente = CType(drSP(6), Integer?)
+
+                                Dim objDireccion As New RTGMCore.DireccionEntrega()
+                                objDireccion = objWS.buscarDireccionEntrega(objSolicitud)
+
+                                Dim pedidoDatos As New RTGMCore.PedidoCRMDatos()
+                                pedidoDatos.IDPedido = CType(drSP(0), Integer?)
+                                pedidoDatos.AnioAtt = CType(drSP(1), Integer?)
+                                pedidoDatos.IDAutotanque = CType(drSP(2), Integer?)
+                                pedidoDatos.IDFolioAtt = CType(drSP(3), Integer?)
+                                pedidoDatos.FolioRemision = CType(drSP(4), Integer?)
+                                pedidoDatos.SerieRemision = CType(drSP(5), String)
+                                Dim rutaS As New RTGMCore.RutaCRMDatos()
+                                rutaS.IDRuta = CType(drSP(7), Integer?)
+                                'pedidoDatos.RutaSuministro = rutaS
+                                pedidoDatos.RutaSuministro = objDireccion.Ruta
+
+                                lstPedido.Add(pedidoDatos)
+                            Loop
+
+                            Dim solicitud As New RTGMGateway.SolicitudActualizarPedido()
+                            solicitud.Fuente = RTGMCore.Fuente.CRM
+                            solicitud.IDEmpresa = GLOBAL_Corporativo
+                            solicitud.Pedidos = lstPedido
+                            solicitud.Portatil = False
+                            solicitud.TipoActualizacion = RTGMCore.TipoActualizacion.Cancelacion
+                            solicitud.Usuario = GLOBAL_Usuario
+
+                            Dim listaRespuesta As New List(Of RTGMCore.Pedido)
+                            listaRespuesta = objGateway.ActualizarPedido(solicitud)
+
+                        Else
+                            'MessageBox.Show("HASROWS = FALSE")
+                        End If
+                    Catch ex As Exception
+                        MsgBox(ex.Message)
+                    Finally
+                        Conexion.Close()
                         Me.Close()
                     End Try
 

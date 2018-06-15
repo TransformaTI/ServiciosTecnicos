@@ -367,6 +367,22 @@ Public Class frmAsignar
                             Dim listaRespuesta As New List(Of RTGMCore.Pedido)
                             listaRespuesta = objGateway.ActualizarPedido(solicitud)
                             'rtgmgateway
+
+                            'Dim respuesta As New RTGMGateway.SolicitudPedidoGateway()
+                            'respuesta.IDAutotanque = unidad
+                            'respuesta.AñoPed = _AñoPed
+                            'respuesta.IDPedido = _Pedido
+
+                            'Dim objWS As New RTGMGateway.RTGMPedidoGateway()
+                            'objWS.URLServicio = 
+
+                            'Dim respuestaPedido As New List(Of RTGMCore.Pedido)
+                            'respuestaPedido = objWS.buscarPedidos(respuesta)
+                            'For Each item As RTGMCore.Pedido In respuestaPedido
+                            'item.idcrm
+                            'Next
+
+                            'update a tabla pedido, campo IDCRM
                         Catch ex As Exception
                             MsgBox(ex.Message)
                         Finally
