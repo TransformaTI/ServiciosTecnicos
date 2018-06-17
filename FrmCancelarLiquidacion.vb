@@ -280,7 +280,7 @@ Public Class FrmCancelarLiquidacion
                         MsgBox(eException.Message)
                         Me.Close()
                     Finally
-                        ConexionTransaction.Close()
+                        'ConexionTransaction.Close()
                         'ConexionTransaction.Dispose()
                         Me.Close()
                     End Try
@@ -291,47 +291,71 @@ Public Class FrmCancelarLiquidacion
                         'siempre y cuando IDCRM no sea NULL
                         Dim spSTObtenerPedido As New SqlCommand()
 
-                        spSTObtenerPedido.Parameters.Add("@Pedido", SqlDbType.Int).Value = 210325
-                        spSTObtenerPedido.Parameters.Add("@Celula", SqlDbType.Int).Value = 2
-                        spSTObtenerPedido.Parameters.Add("@AnioPed", SqlDbType.Int).Value = 2019
+                        spSTObtenerPedido.Parameters.Add("@Folio", SqlDbType.Int).Value = Folio
+                        spSTObtenerPedido.Parameters.Add("@AnioATT", SqlDbType.Int).Value = AñoAtt
+                        'spSTObtenerPedido.Parameters.Add("@Pedido", SqlDbType.Int).Value = vbNull
 
+                        SQLTransaction = ConexionTransaction.BeginTransaction
                         spSTObtenerPedido.Connection = ConexionTransaction
+                        spSTObtenerPedido.Transaction = SQLTransaction
+
                         spSTObtenerPedido.CommandType = CommandType.StoredProcedure
-                        spSTObtenerPedido.CommandText = "spSTObtenerPedido"
+                        spSTObtenerPedido.CommandText = "spSTObtenerDatosPedido"
                         spSTObtenerPedido.CommandTimeout = 300
 
                         Dim drSP As SqlDataReader = spSTObtenerPedido.ExecuteReader(CommandBehavior.CloseConnection)
-                        MessageBox.Show(CType(drSP.FieldCount, String))
 
-                        Dim objGateway As New RTGMGateway.RTGMActualizarPedido()
-                        objGateway.URLServicio = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc"
+                        If drSP.HasRows Then
+                            MessageBox.Show("HASROWS = TRUE")
+                            Dim objGateway As New RTGMGateway.RTGMActualizarPedido()
+                            objGateway.URLServicio = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc"
 
-                        Dim lstPedido As New List(Of RTGMCore.Pedido)
+                            Dim lstPedido As New List(Of RTGMCore.Pedido)
 
-                        Dim pedidoDatos As New RTGMCore.PedidoCRMDatos()
-                        'pedidoDatos.IDPedido = Pedido.IDCRM
-                        'pedidoDatos.AnioAtt = _AñoAtt
-                        'pedidoDatos.IDAutotanque = unidad
-                        'pedidoDatos.IDFolioAtt = _Folio
-                        'pedidoDatos.FolioRemision = folioremision
-                        'pedidoDatos.SerieRemision = serieremision
-                        'Dim rutaS As New RTGMCore.RutaCRMDatos()
-                        'rutaS.IDRuta = 0
-                        'pedidoDatos.RutaSuministro = rutaS
+                            Do While drSP.Read()
+                                MessageBox.Show(CType(drSP(0), String))
+                                Dim objWS As New RTGMGateway.RTGMGateway()
+                                objWS.URLServicio = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc"
 
-                        lstPedido.Add(pedidoDatos)
+                                Dim objSolicitud As New RTGMGateway.SolicitudGateway()
+                                objSolicitud.IDCliente = CType(drSP(6), Integer?)
 
-                        Dim solicitud As New RTGMGateway.SolicitudActualizarPedido()
-                        solicitud.Fuente = RTGMCore.Fuente.CRM
-                        solicitud.IDEmpresa = GLOBAL_Corporativo
-                        solicitud.Pedidos = lstPedido
-                        solicitud.Portatil = False
-                        solicitud.TipoActualizacion = RTGMCore.TipoActualizacion.Cancelacion
-                        solicitud.Usuario = GLOBAL_Usuario
+                                Dim objDireccion As New RTGMCore.DireccionEntrega()
+                                objDireccion = objWS.buscarDireccionEntrega(objSolicitud)
 
+                                Dim pedidoDatos As New RTGMCore.PedidoCRMDatos()
+                                pedidoDatos.IDPedido = CType(drSP(0), Integer?)
+                                pedidoDatos.AnioAtt = CType(drSP(1), Integer?)
+                                pedidoDatos.IDAutotanque = CType(drSP(2), Integer?)
+                                pedidoDatos.IDFolioAtt = CType(drSP(3), Integer?)
+                                pedidoDatos.FolioRemision = CType(drSP(4), Integer?)
+                                pedidoDatos.SerieRemision = CType(drSP(5), String)
+                                Dim rutaS As New RTGMCore.RutaCRMDatos()
+                                rutaS.IDRuta = CType(drSP(7), Integer?)
+                                'pedidoDatos.RutaSuministro = rutaS
+                                pedidoDatos.RutaSuministro = objDireccion.Ruta
+
+                                lstPedido.Add(pedidoDatos)
+                            Loop
+
+                            Dim solicitud As New RTGMGateway.SolicitudActualizarPedido()
+                            solicitud.Fuente = RTGMCore.Fuente.CRM
+                            solicitud.IDEmpresa = GLOBAL_Corporativo
+                            solicitud.Pedidos = lstPedido
+                            solicitud.Portatil = False
+                            solicitud.TipoActualizacion = RTGMCore.TipoActualizacion.Cancelacion
+                            solicitud.Usuario = GLOBAL_Usuario
+
+                            Dim listaRespuesta As New List(Of RTGMCore.Pedido)
+                            listaRespuesta = objGateway.ActualizarPedido(solicitud)
+
+                        Else
+                            'MessageBox.Show("HASROWS = FALSE")
+                        End If
                     Catch ex As Exception
                         MsgBox(ex.Message)
                     Finally
+                        ConexionTransaction.Close()
                         Me.Close()
                     End Try
 
