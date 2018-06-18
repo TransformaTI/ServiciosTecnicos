@@ -438,6 +438,8 @@ Public Class frmCancelarOrden
                         spSTObtenerPedido.Parameters.Add("@Pedido", SqlDbType.Int).Value = _Pedido
                         spSTObtenerPedido.Parameters.Add("@Celula", SqlDbType.Int).Value = _Celula
                         spSTObtenerPedido.Parameters.Add("@AnioPed", SqlDbType.Int).Value = _AñoPed
+                        'MessageBox.Show("_Pedido = " & CType(_Pedido, String) & "; _Celula = " & CType(_Celula, String) & "; _AñoPed = " & CType(_AñoPed, String))
+
 
                         Transaccion = Conexion.BeginTransaction
                         spSTObtenerPedido.Connection = Conexion
@@ -450,32 +452,33 @@ Public Class frmCancelarOrden
                         Dim drSP As SqlDataReader = spSTObtenerPedido.ExecuteReader(CommandBehavior.CloseConnection)
 
                         If drSP.HasRows Then
-                            MessageBox.Show("HASROWS = TRUE")
                             Dim objGateway As New RTGMGateway.RTGMActualizarPedido()
                             objGateway.URLServicio = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc"
 
                             Dim lstPedido As New List(Of RTGMCore.Pedido)
 
                             Do While drSP.Read()
-                                MessageBox.Show(CType(drSP(0), String))
                                 Dim objWS As New RTGMGateway.RTGMGateway()
                                 objWS.URLServicio = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc"
 
                                 Dim objSolicitud As New RTGMGateway.SolicitudGateway()
                                 objSolicitud.IDCliente = CType(drSP(6), Integer?)
+                                objSolicitud.IDEmpresa = GLOBAL_Corporativo
+                                objSolicitud.Fuente = RTGMCore.Fuente.CRM
+                                'objSolicitud.Fuente = RTGMCore.Fuente.Sigamet
 
                                 Dim objDireccion As New RTGMCore.DireccionEntrega()
                                 objDireccion = objWS.buscarDireccionEntrega(objSolicitud)
 
                                 Dim pedidoDatos As New RTGMCore.PedidoCRMDatos()
                                 pedidoDatos.IDPedido = CType(drSP(0), Integer?)
-                                pedidoDatos.AnioAtt = CType(drSP(1), Integer?)
-                                pedidoDatos.IDAutotanque = CType(drSP(2), Integer?)
-                                pedidoDatos.IDFolioAtt = CType(drSP(3), Integer?)
-                                pedidoDatos.FolioRemision = CType(drSP(4), Integer?)
+                                pedidoDatos.AnioAtt = CType(drSP(1), Integer)
+                                pedidoDatos.IDAutotanque = CType(drSP(2), Integer)
+                                pedidoDatos.IDFolioAtt = CType(drSP(3), Integer)
+                                pedidoDatos.FolioRemision = CType(drSP(4), Integer)
                                 pedidoDatos.SerieRemision = CType(drSP(5), String)
                                 Dim rutaS As New RTGMCore.RutaCRMDatos()
-                                rutaS.IDRuta = CType(drSP(7), Integer?)
+                                rutaS.IDRuta = CType(drSP(7), Integer)
                                 'pedidoDatos.RutaSuministro = rutaS
                                 pedidoDatos.RutaSuministro = objDireccion.Ruta
 
@@ -483,7 +486,8 @@ Public Class frmCancelarOrden
                             Loop
 
                             Dim solicitud As New RTGMGateway.SolicitudActualizarPedido()
-                            solicitud.Fuente = RTGMCore.Fuente.CRM
+                            'solicitud.Fuente = RTGMCore.Fuente.CRM
+                            solicitud.Fuente = RTGMCore.Fuente.Sigamet
                             solicitud.IDEmpresa = GLOBAL_Corporativo
                             solicitud.Pedidos = lstPedido
                             solicitud.Portatil = False
