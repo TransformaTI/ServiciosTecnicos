@@ -440,7 +440,6 @@ Public Class frmCancelarOrden
                         spSTObtenerPedido.Parameters.Add("@AnioPed", SqlDbType.Int).Value = _AñoPed
                         'MessageBox.Show("_Pedido = " & CType(_Pedido, String) & "; _Celula = " & CType(_Celula, String) & "; _AñoPed = " & CType(_AñoPed, String))
 
-
                         Transaccion = Conexion.BeginTransaction
                         spSTObtenerPedido.Connection = Conexion
                         spSTObtenerPedido.Transaction = Transaccion
@@ -486,8 +485,8 @@ Public Class frmCancelarOrden
                             Loop
 
                             Dim solicitud As New RTGMGateway.SolicitudActualizarPedido()
-                            'solicitud.Fuente = RTGMCore.Fuente.CRM
-                            solicitud.Fuente = RTGMCore.Fuente.Sigamet
+                            solicitud.Fuente = RTGMCore.Fuente.CRM
+                            'solicitud.Fuente = RTGMCore.Fuente.Sigamet
                             solicitud.IDEmpresa = GLOBAL_Corporativo
                             solicitud.Pedidos = lstPedido
                             solicitud.Portatil = False

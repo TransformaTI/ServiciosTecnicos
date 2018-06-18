@@ -290,10 +290,13 @@ Public Class FrmCancelarLiquidacion
                         'buscar en la tabla pedido con el Folio (que está arriba asignado), traer lo necesario.
                         'siempre y cuando IDCRM no sea NULL
                         Dim spSTObtenerPedido As New SqlCommand()
-
+                        MessageBox.Show("Dim spSTObtenerPedido As New SqlCommand()")
+                        spSTObtenerPedido.Parameters.Add("@Pedido", SqlDbType.Int).Value = -1
+                        spSTObtenerPedido.Parameters.Add("@Celula", SqlDbType.Int).Value = -1
+                        spSTObtenerPedido.Parameters.Add("@AnioPed", SqlDbType.Int).Value = -1
                         spSTObtenerPedido.Parameters.Add("@Folio", SqlDbType.Int).Value = Folio
                         spSTObtenerPedido.Parameters.Add("@AnioATT", SqlDbType.Int).Value = AñoAtt
-                        'spSTObtenerPedido.Parameters.Add("@Pedido", SqlDbType.Int).Value = vbNull
+                        'MessageBox.Show("Folio = " & CType(Folio, String) & "; AñoAtt = " & CType(AñoAtt, String))
 
                         SQLTransaction = ConexionTransaction.BeginTransaction
                         spSTObtenerPedido.Connection = ConexionTransaction
@@ -306,32 +309,33 @@ Public Class FrmCancelarLiquidacion
                         Dim drSP As SqlDataReader = spSTObtenerPedido.ExecuteReader(CommandBehavior.CloseConnection)
 
                         If drSP.HasRows Then
-                            MessageBox.Show("HASROWS = TRUE")
                             Dim objGateway As New RTGMGateway.RTGMActualizarPedido()
                             objGateway.URLServicio = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc"
 
                             Dim lstPedido As New List(Of RTGMCore.Pedido)
 
                             Do While drSP.Read()
-                                MessageBox.Show(CType(drSP(0), String))
                                 Dim objWS As New RTGMGateway.RTGMGateway()
                                 objWS.URLServicio = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc"
 
                                 Dim objSolicitud As New RTGMGateway.SolicitudGateway()
-                                objSolicitud.IDCliente = CType(drSP(6), Integer?)
+                                objSolicitud.IDCliente = CType(drSP(6), Integer)
+                                objSolicitud.IDEmpresa = GLOBAL_Corporativo
+                                'objSolicitud.Fuente = RTGMCore.Fuente.Sigamet
+                                objSolicitud.Fuente = RTGMCore.Fuente.CRM
 
                                 Dim objDireccion As New RTGMCore.DireccionEntrega()
                                 objDireccion = objWS.buscarDireccionEntrega(objSolicitud)
 
                                 Dim pedidoDatos As New RTGMCore.PedidoCRMDatos()
-                                pedidoDatos.IDPedido = CType(drSP(0), Integer?)
-                                pedidoDatos.AnioAtt = CType(drSP(1), Integer?)
-                                pedidoDatos.IDAutotanque = CType(drSP(2), Integer?)
-                                pedidoDatos.IDFolioAtt = CType(drSP(3), Integer?)
-                                pedidoDatos.FolioRemision = CType(drSP(4), Integer?)
+                                pedidoDatos.IDPedido = CType(drSP(0), Integer)
+                                pedidoDatos.AnioAtt = CType(drSP(1), Integer)
+                                pedidoDatos.IDAutotanque = CType(drSP(2), Integer)
+                                pedidoDatos.IDFolioAtt = CType(drSP(3), Integer)
+                                pedidoDatos.FolioRemision = CType(drSP(4), Integer)
                                 pedidoDatos.SerieRemision = CType(drSP(5), String)
                                 Dim rutaS As New RTGMCore.RutaCRMDatos()
-                                rutaS.IDRuta = CType(drSP(7), Integer?)
+                                rutaS.IDRuta = CType(drSP(7), Integer)
                                 'pedidoDatos.RutaSuministro = rutaS
                                 pedidoDatos.RutaSuministro = objDireccion.Ruta
 
@@ -340,6 +344,7 @@ Public Class FrmCancelarLiquidacion
 
                             Dim solicitud As New RTGMGateway.SolicitudActualizarPedido()
                             solicitud.Fuente = RTGMCore.Fuente.CRM
+                            'solicitud.Fuente = RTGMCore.Fuente.Sigamet
                             solicitud.IDEmpresa = GLOBAL_Corporativo
                             solicitud.Pedidos = lstPedido
                             solicitud.Portatil = False
@@ -350,7 +355,7 @@ Public Class FrmCancelarLiquidacion
                             listaRespuesta = objGateway.ActualizarPedido(solicitud)
 
                         Else
-                            'MessageBox.Show("HASROWS = FALSE")
+                            MessageBox.Show("HASROWS = FALSE")
                         End If
                     Catch ex As Exception
                         MsgBox(ex.Message)
