@@ -236,35 +236,35 @@ Public Class frmServProgramacion
 		End Try
 
 		'Try
-		'Dim da As New SqlDataAdapter("select Cliente,Celula,Ruta,Nombre,isnull(RazonSocial,'Sin empresa') as RazonSocial,Callenombre,isnull(NumInterior,'') as NumInterior,isnull(NumExterior,'') as NumExterior,isnull(ColoniaNombre,'')as ColoniaNombre,isnull(cp,'') as cp,Status,MunicipioNombre,isnull(TelCasa,'')as TelCasa,clasificacionclientedescripcion from vwdatoscliente Where Cliente = " & Client, cnnSigamet)
-		'    Dim dt As New DataTable("Cliente")
-		'    da.Fill(dt)
-		'    'if apara la comparacion de que no haya dos mismos registros
-		'    If dt.Rows.Count >= 1 Then
-		'        lblCliente.Text = CType(dt.Rows(0).Item("Cliente"), String)
-		'        'se pone el nombre del objeto a llenar.text = conexion con cliente(dt)
-		'        'rows(0).item(nombre del campo de la tabla)
-		'        lblCelula.Text = CType(dt.Rows(0).Item("Celula"), String)
-		'        lblRuta.Text = CType(dt.Rows(0).Item("Ruta"), String)
-		'        lblCelula.Text = CType(dt.Rows(0).Item("Celula"), String)
-		'        lblRuta.Text = CType(dt.Rows(0).Item("Ruta"), String)
-		'        lblNombre.Text = CType(dt.Rows(0).Item("Nombre"), String)
-		'        lblEmpresa.Text = CType(dt.Rows(0).Item("RazonSocial"), String)
-		'        lblCalle.Text = CType(dt.Rows(0).Item("CalleNombre"), String)
-		'        lblNumeroInterior.Text = CType(dt.Rows(0).Item("NumInterior"), String)
-		'        lblNumeroExterior.Text = CType(dt.Rows(0).Item("numexterior"), String)
-		'        lblColonia.Text = CType(dt.Rows(0).Item("colonianombre"), String)
-		'        lblCP.Text = CType(dt.Rows(0).Item("cp"), String)
-		'        lblStatusCliente.Text = CType(dt.Rows(0).Item("status"), String)
-		'        lblMunicipio.Text = CType(dt.Rows(0).Item("municipionombre"), String)
-		'        lblTelefono.Text = CType(dt.Rows(0).Item("telcasa"), String)
-		'        lblClasificacionCliente.Text = CType(dt.Rows(0).Item("clasificacionclientedescripcion"), String)
-		'    End If
+		'	Dim da As New SqlDataAdapter("select Cliente,Celula,Ruta,Nombre,isnull(RazonSocial,'Sin empresa') as RazonSocial,Callenombre,isnull(NumInterior,'') as NumInterior,isnull(NumExterior,'') as NumExterior,isnull(ColoniaNombre,'')as ColoniaNombre,isnull(cp,'') as cp,Status,MunicipioNombre,isnull(TelCasa,'')as TelCasa,clasificacionclientedescripcion from vwdatoscliente Where Cliente = " & Client, cnnSigamet)
+		'	Dim dt As New DataTable("Cliente")
+		'	da.Fill(dt)
+		'	'if apara la comparacion de que no haya dos mismos registros
+		'	If dt.Rows.Count >= 1 Then
+		'		lblCliente.Text = CType(dt.Rows(0).Item("Cliente"), String)
+		'		'se pone el nombre del objeto a llenar.text = conexion con cliente(dt)
+		'		'rows(0).item(nombre del campo de la tabla)
+		'		lblCelula.Text = CType(dt.Rows(0).Item("Celula"), String)
+		'		lblRuta.Text = CType(dt.Rows(0).Item("Ruta"), String)
+		'		lblCelula.Text = CType(dt.Rows(0).Item("Celula"), String)
+		'		lblRuta.Text = CType(dt.Rows(0).Item("Ruta"), String)
+		'		lblNombre.Text = CType(dt.Rows(0).Item("Nombre"), String)
+		'		lblEmpresa.Text = CType(dt.Rows(0).Item("RazonSocial"), String)
+		'		lblCalle.Text = CType(dt.Rows(0).Item("CalleNombre"), String)
+		'		lblNumeroInterior.Text = CType(dt.Rows(0).Item("NumInterior"), String)
+		'		lblNumeroExterior.Text = CType(dt.Rows(0).Item("numexterior"), String)
+		'		lblColonia.Text = CType(dt.Rows(0).Item("colonianombre"), String)
+		'		lblCP.Text = CType(dt.Rows(0).Item("cp"), String)
+		'		lblStatusCliente.Text = CType(dt.Rows(0).Item("status"), String)
+		'		lblMunicipio.Text = CType(dt.Rows(0).Item("municipionombre"), String)
+		'		lblTelefono.Text = CType(dt.Rows(0).Item("telcasa"), String)
+		'		lblClasificacionCliente.Text = CType(dt.Rows(0).Item("clasificacionclientedescripcion"), String)
+		'	End If
 		'Catch e As Exception
-		'    MessageBox.Show(e.Message)
+		'	MessageBox.Show(e.Message)
 		'Finally
-		'    cnnSigamet.Close()
-		'    'cnnSigamet.Dispose()
+		'	cnnSigamet.Close()
+		'	'cnnSigamet.Dispose()
 		'End Try
 	End Sub
 

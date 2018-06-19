@@ -95,8 +95,7 @@ Public Class Cliente
 
 			ObjDireccionEntrega = objGateway.buscarDireccionEntrega(objRequest)
 
-
-			celula = "celula"
+			Celula = ObjDireccionEntrega.ZonaSuministro.IDZona.ToString
 			Ruta = ObjDireccionEntrega.Ruta.NumeroRuta.ToString
 			Nombre = ObjDireccionEntrega.Nombre
 			Empresa = ObjDireccionEntrega.DatosFiscales.RazonSocial
