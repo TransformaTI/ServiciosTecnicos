@@ -345,7 +345,7 @@ Public Class frmAsignar
                             Dim lstPedido As New List(Of RTGMCore.Pedido)
 
                             Dim pedidoDatos As New RTGMCore.PedidoCRMDatos()
-                            'pedidoDatos.IDPedido = 0
+                            'pedidoDatos.IDPedido = _Pedido
                             pedidoDatos.AnioAtt = _AñoAtt
                             pedidoDatos.IDAutotanque = unidad
                             pedidoDatos.IDFolioAtt = _Folio
@@ -358,6 +358,7 @@ Public Class frmAsignar
 
                             Dim solicitud As New RTGMGateway.SolicitudActualizarPedido()
                             solicitud.Fuente = RTGMCore.Fuente.CRM
+                            'solicitud.Fuente = RTGMCore.Fuente.Sigamet
                             solicitud.IDEmpresa = GLOBAL_Corporativo
                             solicitud.Pedidos = lstPedido
                             solicitud.Portatil = False
