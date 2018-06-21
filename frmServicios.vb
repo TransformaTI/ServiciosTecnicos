@@ -40,9 +40,10 @@ Public Class frmServicios
         'Seguridad del modulo
         _Usuario = Usuario
         GLOBAL_Corporativo = Corporativo
-        GLOBAL_Sucursal = Sucursal
+		GLOBAL_Sucursal = Sucursal
 
-        oSeguridad = New SigaMetClasses.cSeguridad(_Usuario, 11)
+
+		oSeguridad = New SigaMetClasses.cSeguridad(_Usuario, 11)
 
         dtpFCompromiso.Value = Fecha
         CargaDatos(Cliente)

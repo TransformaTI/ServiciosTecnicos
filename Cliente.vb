@@ -46,7 +46,7 @@ Public Class Cliente
 
 		Dim cmd As New SqlCommand("spObtieneParametro", _conexion)
 		cmd.CommandType = System.Data.CommandType.StoredProcedure
-		cmd.Parameters.Add("@usuario", SqlDbType.VarChar, 30).Value = "ROPIMA"
+		cmd.Parameters.Add("@usuario", SqlDbType.VarChar, 30).Value = _usuario
 		cmd.Parameters.Add("@modulo", SqlDbType.Int).Value = 30
 		cmd.Parameters.Add("@parametro", SqlDbType.VarChar, 30).Value = "URLGateway"
 
@@ -81,7 +81,7 @@ Public Class Cliente
 			url = consultaURL()
 
 			Dim objGateway As New RTGMGateway.RTGMGateway
-			objGateway.URLServicio = "http://192.168.1.30:88/GasMetropolitanoRuntimeService.svc"
+			objGateway.URLServicio = url
 			Dim objRequest As New RTGMGateway.SolicitudGateway()
 
 
